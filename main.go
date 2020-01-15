@@ -30,15 +30,15 @@ var pkgsToInstall = [...]string{
 type command struct {
 	Dry  bool
 	Name string
-	Args []string
+	Args string
 }
 
 func run(command command) {
 	if command.Dry == true {
-		fmt.Println("DRY :: Should excecute:\n\t", command.Name, strings.Join(command.Args[:], " "))
+		fmt.Println("DRY :: Should excecute:\n\t", command.Name, command.Args)
 		return
 	}
-	cmd := exec.Command(command.Name, command.Args...)
+	cmd := exec.Command(command.Name, strings.Split(command.Args, " ")...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
@@ -50,16 +50,15 @@ func run(command command) {
 func testCmd() {
 	cmd := command{
 		Name: "ls",
-		Args: []string{"-l", "-a", "-s"},
+		Args: "-l -a -s",
 	}
 	run(cmd)
 }
 
 func installPkgs() {
 	cmd := command{
-		Name: "sudo dnf",
-		Args: []string{"install", "-y", strings.Join(pkgsToInstall[:], " ")},
-		Dry:  true,
+		Name: "sudo",
+		Args: "dnf install -y " + strings.Join(pkgsToInstall[:], " "),
 	}
 	run(cmd)
 }
