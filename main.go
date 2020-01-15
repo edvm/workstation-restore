@@ -27,12 +27,18 @@ var pkgsToInstall = [...]string{
 	"golang",
 }
 
-func run(cmdName string, cmdArgs []string, dry bool) {
-	if dry == true {
-		fmt.Println("DRY :: Should excecute:\n\t", cmdName, strings.Join(cmdArgs[:], " "))
+type command struct {
+	Dry  bool
+	Name string
+	Args []string
+}
+
+func run(command command) {
+	if command.Dry == true {
+		fmt.Println("DRY :: Should excecute:\n\t", command.Name, strings.Join(command.Args[:], " "))
 		return
 	}
-	cmd := exec.Command(cmdName, cmdArgs...)
+	cmd := exec.Command(command.Name, command.Args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
@@ -42,20 +48,23 @@ func run(cmdName string, cmdArgs []string, dry bool) {
 }
 
 func testCmd() {
-	cmdName := "ls"
-	cmdArgs := []string{"-l", "-a", "-s"}
-	run(cmdName, cmdArgs, true)
+	cmd := command{
+		Name: "ls",
+		Args: []string{"-l", "-a", "-s"},
+	}
+	run(cmd)
 }
 
 func installPkgs() {
-	cmdName := "sudo dnf"
-	cmdArgs := []string{"install", "-y", strings.Join(pkgsToInstall[:], " ")}
-	run(cmdName, cmdArgs, true)
+	cmd := command{
+		Name: "sudo dnf",
+		Args: []string{"install", "-y", strings.Join(pkgsToInstall[:], " ")},
+		Dry:  true,
+	}
+	run(cmd)
 }
 
 func main() {
-	// fmt.Println(vscodeGpgKeyCmd)
-	// fmt.Println(pkgsToInstall)
-	// testCmd()
+	testCmd()
 	installPkgs()
 }
