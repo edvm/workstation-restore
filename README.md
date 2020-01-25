@@ -11,6 +11,9 @@ with a Fedora workstation plus:
 - golang (with GOPATH configured for current user)
 - pyenv (https://github.com/pyenv/pyenv)
 - Fira Code fonts (https://github.com/tonsky/FiraCode/)
+- Kitty terminal (https://sw.kovidgoyal.net/kitty/) and autoconfigure it with my prefs
+- Kitty themes (https://github.com/dexpota/kitty-themes)
+- awesome wm + default config
 
 
 PR's are welcome!
