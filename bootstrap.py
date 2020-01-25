@@ -10,7 +10,9 @@ import os
 
 HOME = os.getenv('HOME')
 
-KITTY_TERMINAL_DEFAULT_THEME = "3024_Night.conf"  # default kitty term name
+KITTY_TERMINAL_DEFAULT_THEME = "Argonaut.conf"  # default kitty term name
+
+SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 VSCODE_GPG_KEY_CMD = '''
@@ -115,8 +117,7 @@ def setup_kitty_term(theme=KITTY_TERMINAL_DEFAULT_THEME):
     _exc(f"ln -s {kitty_dir}/kitty-themes/themes/{theme} {kitty_dir}/theme.conf")
     if not os.path.isfile(kitty_conf):
         _tell(f"Creating default {kitty_conf} file...")
-        with open(kitty_conf, 'w') as fp:
-            fp.write('include ./theme.conf')
+        shutil.copyfile(f"{SCRIPT_PATH}/kitty/kitty.conf", kitty_conf)
 
 
 def install_pyenv():
