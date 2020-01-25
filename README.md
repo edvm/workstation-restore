@@ -14,6 +14,14 @@ with a Fedora workstation plus:
 - Kitty terminal (https://sw.kovidgoyal.net/kitty/) and autoconfigure it with my prefs
 - Kitty themes (https://github.com/dexpota/kitty-themes)
 - awesome wm + default config
+- flameshot (https://flameshot.js.org/#/) to take screenshots 
+
+
+## Screenshots
+
+![](screenshots/1.png)
+
+![](screenshots/2.png)
 
 
 PR's are welcome!
