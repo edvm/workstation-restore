@@ -248,13 +248,13 @@ local netdl_icon = wibox.widget.imagebox(beautiful.widget_netdl)
 local netup_icon = wibox.widget.imagebox(beautiful.widget_netul)
 
 local net_widgetdl = lain.widget.net({
-    iface = "wlp3s0",
+    iface = "wlp4s0",
     settings = function()
         widget:set_markup(markup.font("Tamsyn 1", " ") .. net_now.received)
     end
 })
 local net_widgetul = lain.widget.net({
-    iface = "wlp3s0",
+    iface = "wlp4s0",
     settings = function()
         widget:set_markup(markup.font("Tamsyn 1", "  ") .. net_now.sent)
     end
@@ -274,14 +274,14 @@ kbdwidget:set_markup("<span foreground=".."'"..beautiful.fg_normal.."'".."> Eng 
 kbdstrings = {[0] = " Eng ",
               [1] = " Rus "}
 
-dbus.request_name("session", "ru.gentoo.kbdd")
-dbus.add_match("session", "interface='ru.gentoo.kbdd',member='layoutChanged'")
-dbus.connect_signal("ru.gentoo.kbdd", function(...)
-    local data = {...}
-    local layout = data[2]
-    kbdwidget:set_markup("<span foreground=".."'"..beautiful.fg_normal.."'"..">" .. kbdstrings[layout] .. "</span>")
-    end
-)
+-- dbus.request_name("session", "ru.gentoo.kbdd")
+-- dbus.add_match("session", "interface='ru.gentoo.kbdd',member='layoutChanged'")
+-- dbus.connect_signal("ru.gentoo.kbdd", function(...)
+--     local data = {...}
+--     local layout = data[2]
+--     kbdwidget:set_markup("<span foreground=".."'"..beautiful.fg_normal.."'"..">" .. kbdstrings[layout] .. "</span>")
+--     end
+-- )
 local kbd_widget = wibox.container.background(kbdwidget)
 kbd_widget.bgimage=beautiful.widget_display
 
@@ -489,6 +489,15 @@ function connect(s)
           layout = wibox.layout.fixed.horizontal,
           s.mypromptbox,
           wibox.widget.systray(),
+          -- Net widget
+          spr,
+          netdl_icon,
+          widget_display_l,
+          netdl_widget,
+          widget_display_c,
+          netup_widget,
+          widget_display_r,
+          netup_icon,
           -- spr5px,
           -- spr,
           -- widget_display_l,
@@ -531,21 +540,12 @@ function connect(s)
           widget_display_r,
           spr5px,
           -- Fs widget
-          spr,
-          fs_icon,
-          widget_display_l,
-          fs_widget,
-          widget_display_r,
-          spr5px,
-          -- Net widget
-          spr,
-          netdl_icon,
-          widget_display_l,
-          netdl_widget,
-          widget_display_c,
-          netup_widget,
-          widget_display_r,
-          netup_icon,
+          -- spr,
+          -- fs_icon,
+          -- widget_display_l,
+          -- fs_widget,
+          -- widget_display_r,
+          -- spr5px,
           -- Battery widget
           spr,
           bat_icon,
