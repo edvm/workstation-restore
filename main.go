@@ -47,6 +47,12 @@ func run(command command) {
 	}
 }
 
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+
 func testCmd() {
 	cmd := command{
 		Name: "ls",
@@ -56,6 +62,7 @@ func testCmd() {
 }
 
 func installPkgs() {
+	fmt.Println("Going to install base packages...")
 	cmd := command{
 		Name: "sudo",
 		Args: "dnf install -y " + strings.Join(pkgsToInstall[:], " "),
@@ -63,7 +70,40 @@ func installPkgs() {
 	run(cmd)
 }
 
+func installFonts() {
+	fmt.Println("Going to install Fira Code fonts...")
+	cmd := command{
+		Name: "sudo",
+		Args: "bash ./fonts/install_fira_code.sh",
+	}
+	run(cmd)
+}
+
+func setupGolang() {
+	goDir := os.Getenv("HOME") + "/Code/go"
+	_, error := os.Stat(goDir)
+	if error != nil {
+		if os.IsNotExist(error) {
+			fmt.Println("Go dir doesnt exists at: ", goDir)
+		}
+	} else {
+		fmt.Println("Found go dir at:", goDir)
+	}
+	fmt.Println("Going to setup golang...")
+
+	zshrc := os.Getenv("HOME") + "/.zshrc"
+	f, err := os.OpenFile(zshrc, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	check(err)
+	defer f.Close()
+
+	if _, err := f.Write([]byte("\nexport GOPATH=\"" + goDir + "\"\n")); err != nil {
+		check(err)
+	}
+}
+
 func main() {
-	testCmd()
-	installPkgs()
+	// testCmd()
+	// installPkgs()
+	// installFonts()
+	setupGolang()
 }
