@@ -38,6 +38,7 @@ PKGS_TO_INSTALL = [
     'powerline-fonts',
     'nvim',
     'kitty',
+    'flameshot'
 ]
 
 
