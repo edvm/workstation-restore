@@ -10,6 +10,8 @@ import os
 
 HOME = os.getenv('HOME')
 
+KITTY_TERMINAL_DEFAULT_THEME = "3024_Night.conf"  # default kitty term name
+
 
 VSCODE_GPG_KEY_CMD = '''
 sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
@@ -31,6 +33,9 @@ PKGS_TO_INSTALL = [
     'zsh',
     'util-linux-user',
     'golang',
+    'powerline-fonts',
+    'nvim',
+    'kitty',
 ]
 
 
@@ -93,6 +98,25 @@ def setup_zsh_shell():
 
     _tell("Changing user shell to zsh...")
     _exc("chsh -s /usr/bin/zsh")
+
+
+def setup_kitty_term(theme=KITTY_TERMINAL_DEFAULT_THEME):
+    """Setup kitty terminal."""
+    kitty_dir = f"{HOME}/.config/kitty"
+    kitty_conf = f"{HOME}/.config/kitty/kitty.conf"
+    kitty_themes_dir = f"{kitty_dir}/kitty-themes"
+    if not os.path.isdir(kitty_themes_dir):
+        _tell("Going to download kitty themes...")
+        _exc(f"git clone --depth 1 git@github.com:dexpota/kitty-themes.git {HOME}/.config/kitty/kitty-themes")
+    _tell("Set kitty theme...")
+    if os.path.isfile(f"{kitty_dir}/theme.conf"):
+        _tell("Removing previous kitty theme...")
+        os.unlink(f"{kitty_dir}/theme.conf")
+    _exc(f"ln -s {kitty_dir}/kitty-themes/themes/{theme} {kitty_dir}/theme.conf")
+    if not os.path.isfile(kitty_conf):
+        _tell(f"Creating default {kitty_conf} file...")
+        with open(kitty_conf, 'w') as fp:
+            fp.write('include ./theme.conf')
 
 
 def install_pyenv():
