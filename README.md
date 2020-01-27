@@ -28,7 +28,15 @@ Just execute `python cli.py`. Use `change_distro fedora` and then type `help` to
 ## It's extensible
 
 Take a look at `dummy.py`. Inside the shell (see above) you can type `change_distro dummy` and all functions
-defined in `dummy.py` will be available (check it typing `help` or `?`). To extend it to Ubuntu, just create
+defined in `dummy.py` will be available (check it typing `help` or `?`). 
+
+![](screenshots/5.png)
+
+So then, all the `dummy.py` functions are available:
+
+![](screenshots/6.png)
+
+To extend it to Ubuntu, just create
 a new file `ubuntu.py` with your functions. Take a look at `fedora.py`, some functions are distro independent.
 
 
