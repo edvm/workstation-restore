@@ -4,7 +4,7 @@ import sys
 import cmd
 import os
 
-from common import excecute, tell_user
+from common import execute, tell_user
 
 HOME = os.getenv("HOME")
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -37,20 +37,26 @@ PKGS_TO_INSTALL = [
 ]
 
 
-def install_base_pkgs():
+def install_base_pkgs(cmd, pkgs=None):
+    """Install basic system packages (dev headers, tools, lang compilers, etc.)"""
+    if not pkgs:
+        pkgs = PKGS_TO_INSTALL
     tell_user("Going to install base pkgs...")
-    excecute(f"sudo dnf install -y {' '.join(pkg for pkg in PKGS_TO_INSTALL)}")
+    execute(f"sudo dnf install -y {' '.join(pkg for pkg in pkgs)}")
 
 
-def install_vs_code():
+def install_vs_code(cmd):
+    """Import Microsoft vscode gpg key, adds microsoft repository and then install vscode."""
     tell_user("Going to install vscode...")
     tell_user("Importing vscode repo...")
-    excecute("sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc")
+    execute("sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc")
     tell_user("Adding Microsoft vscode gpg key...")
-    excecute(VSCODE_GPG_KEY_CMD)
+    execute(VSCODE_GPG_KEY_CMD)
+    tell_user("Going to install vscode...")
+    execute("sudo dnf install -y code")
 
 
-def setup_zsh_shell():
+def setup_zsh_shell(cmd):
     """Setup zsh for current user."""
     tell_user("Going to setup zsh...")
     zshrc = f"{HOME}/.zshrc"
@@ -61,13 +67,13 @@ def setup_zsh_shell():
     if os.path.exists(ohmyzsh):
         shutil.rmtree(ohmyzsh)
     tell_user("Downloading oh-my-zsh...")
-    excecute(f"git clone git://github.com/robbyrussell/oh-my-zsh.git {ohmyzsh}")
+    execute(f"git clone git://github.com/robbyrussell/oh-my-zsh.git {ohmyzsh}")
 
     tell_user("Setting oh-my-zsh base template as zshrc file...")
-    excecute(f"cp {ohmyzsh}/templates/zshrc.zsh-template {HOME}/.zshrc")
+    execute(f"cp {ohmyzsh}/templates/zshrc.zsh-template {HOME}/.zshrc")
 
     tell_user("Changing user shell to zsh...")
-    excecute("chsh -s /usr/bin/zsh")
+    execute("chsh -s /usr/bin/zsh")
 
 
 def setup_kitty_term(theme=KITTY_TERMINAL_DEFAULT_THEME):
@@ -77,14 +83,14 @@ def setup_kitty_term(theme=KITTY_TERMINAL_DEFAULT_THEME):
     kitty_themes_dir = f"{kitty_dir}/kitty-themes"
     if not os.path.isdir(kitty_themes_dir):
         tell_user("Going to download kitty themes...")
-        excecute(
+        execute(
             f"git clone --depth 1 git@github.com:dexpota/kitty-themes.git {HOME}/.config/kitty/kitty-themes"
         )
     tell_user("Set kitty theme...")
     if os.path.isfile(f"{kitty_dir}/theme.conf"):
         tell_user("Removing previous kitty theme...")
         os.unlink(f"{kitty_dir}/theme.conf")
-    excecute(f"ln -s {kitty_dir}/kitty-themes/themes/{theme} {kitty_dir}/theme.conf")
+    execute(f"ln -s {kitty_dir}/kitty-themes/themes/{theme} {kitty_dir}/theme.conf")
     if not os.path.isfile(kitty_conf):
         tell_user(f"Creating default {kitty_conf} file...")
         shutil.copyfile(f"{SCRIPT_PATH}/kitty/kitty.conf", kitty_conf)
@@ -99,14 +105,14 @@ def setup_fisa_vim():
         "python3-pylint",
         "python3-isort",
     ]
-    excecute(f"sudo dnf install -y {' '.join(pkg for pkg in fisa_requirements)}")
-    excecute("pip3 install --user pynvim")
+    execute(f"sudo dnf install -y {' '.join(pkg for pkg in fisa_requirements)}")
+    execute("pip3 install --user pynvim")
 
     nvim_dir = f"{HOME}/.config/nvim"
     tell_user("Downloading fisa vim config...")
     if not os.path.isdir(f"{nvim_dir}"):
         os.makedirs(f"{nvim_dir}")
-    excecute(
+    execute(
         f"wget -O {nvim_dir}/init.vim https://raw.github.com/fisadev/fisa-vim-config/master/config.vim"
     )
 
@@ -118,7 +124,7 @@ def setup_npm():
     pathlib.Path(npm_packages_dir).mkdir(parents=True, exist_ok=True)
 
     tell_user("Tell `npm` where to store globally installed packages...")
-    excecute(f"npm config set prefix {npm_packages_dir}")
+    execute(f"npm config set prefix {npm_packages_dir}")
 
     tell_user("Ensure `npm` will find installed binaries and man packages")
     zshrc = f"{HOME}/.zshrc"
