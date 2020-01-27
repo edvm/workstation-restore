@@ -21,6 +21,10 @@ with:
 
 Just execute `python cli.py`. Use `change_distro fedora` and then type `help` to get the list of commands.
 
+![](screenshots/3.png)
+
+![](screenshots/4.png)
+
 ## It's extensible
 
 Take a look at `dummy.py`. Inside the shell (see above) you can type `change_distro dummy` and all functions
