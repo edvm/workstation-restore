@@ -38,7 +38,8 @@ PKGS_TO_INSTALL = [
     'powerline-fonts',
     'nvim',
     'kitty',
-    'flameshot'
+    'flameshot',
+    'node',
 ]
 
 
@@ -121,6 +122,25 @@ def setup_kitty_term(theme=KITTY_TERMINAL_DEFAULT_THEME):
         shutil.copyfile(f"{SCRIPT_PATH}/kitty/kitty.conf", kitty_conf)
 
 
+def setup_fisa_vim():
+    """Setup fisa vim."""
+    _tell("Going to install fisa vim deps...")
+    fisa_requirements = [
+        "ctags-etags",
+        "python3-flake8",
+        "python3-pylint",
+        "python3-isort"
+    ]
+    _exc(f"sudo dnf install -y {' '.join(pkg for pkg in fisa_requirements)}")
+    _exc("pip3 install --user pynvim")
+
+    nvim_dir = f"{HOME}/.config/nvim"
+    _tell("Downloading fisa vim config...")
+    if not os.path.isdir(f"{nvim_dir}"):
+        os.makedirs(f"{nvim_dir}")
+    _exc(f"wget -O {nvim_dir}/init.vim https://raw.github.com/fisadev/fisa-vim-config/master/config.vim")
+
+
 def install_pyenv():
     _tell("Going to install pyenv")
     os.system("curl https://pyenv.run | bash")
@@ -143,7 +163,7 @@ def setup_golang():
 
 def install_fonts():
     _tell("Going to install Fira Code fonts...")
-    os.system('bash ./fonts/install_fira_code.sh') 
+    os.system('bash ./fonts/install_fira_code.sh')
 
 
 def last_step():
@@ -161,4 +181,6 @@ if __name__ == "__main__":
         setup_zsh_shell()
         install_vs_code()
         install_pyenv()
+        setup_kitty_term()
+        setup_fisa_vim()
         last_step()
