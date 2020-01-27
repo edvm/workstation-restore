@@ -39,7 +39,7 @@ PKGS_TO_INSTALL = [
     'nvim',
     'kitty',
     'flameshot',
-    'node',
+    'npm',
 ]
 
 
