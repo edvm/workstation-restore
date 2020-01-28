@@ -23,9 +23,9 @@ def tell_user(msg, stcode=None):
     return info(msg)
 
 
-def execute(cmd):
+def execute(cmd, env=None):
     """Execute given cmd with subprocess. Return its returncode."""
-    process = subprocess.run(shlex.split(cmd))
+    process = subprocess.run(shlex.split(cmd), env=env)
     returncode = process.returncode
     tell_user('', stcode=returncode)
     return returncode

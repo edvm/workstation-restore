@@ -40,6 +40,8 @@ class SystemRestoreShell(cmd.Cmd):
         """Load module functions."""
         self.remove_old_fns()
         for fname, fn in module_fns_list(module):
+            if fname.startswith('_'):
+                continue
             name = f"do_{fname}" 
             self.to_remove.append(name)
             if name not in self.get_names(): 
@@ -69,6 +71,8 @@ class SystemRestoreShell(cmd.Cmd):
                     func = getattr(self, 'do_' + cmd)
                 else:
                     func = getattr(self.current_distro_module, cmd)
+                    if not arg:  # if no args defined, just call module `func` right now
+                        return func()
             except AttributeError:
                 return self.default(line)
             return func(arg)
