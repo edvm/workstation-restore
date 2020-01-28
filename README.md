@@ -16,6 +16,7 @@ with:
 - awesome wm + default config
 - flameshot (https://flameshot.js.org/#/) to take screenshots 
 - fisavim (http://vim.fisadev.com/)
+- node, npm and `n` (node version management, https://github.com/tj/n)
 
 ## How to use it:
 
