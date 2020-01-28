@@ -11,16 +11,18 @@ from common import tell_user, module_fns_list
 class SystemRestoreShell(cmd.Cmd):
     """System Restore Shell."""
 
-    intro = "Welcome to Fedora System Restore. Type help or ? to list commands.\n"
-    distro = "fedora"
+    intro = "Welcome to System Restore. Type help or ? to list commands.\n"
+    distro = ""
     distros = {'fedora': fedora, 'dummy': dummy}
-    
+
     to_remove = []
     system_restore_shell_cmds = ['help', '?', 'change_distro', 'quit']
 
     @property
     def prompt(self):
-        return f"({self.distro}-restore) "
+        if self.distro:
+            return f"({self.distro}-restore) "
+        return "(set distro to use) "
 
     @property
     def current_distro_module(self):
@@ -42,9 +44,9 @@ class SystemRestoreShell(cmd.Cmd):
         for fname, fn in module_fns_list(module):
             if fname.startswith('_'):
                 continue
-            name = f"do_{fname}" 
+            name = f"do_{fname}"
             self.to_remove.append(name)
-            if name not in self.get_names(): 
+            if name not in self.get_names():
                 setattr(self.__class__, name, fn)
 
     def onecmd(self, line):
@@ -67,7 +69,7 @@ class SystemRestoreShell(cmd.Cmd):
             return self.default(line)
         else:
             try:
-                if cmd in self.system_restore_shell_cmds: 
+                if cmd in self.system_restore_shell_cmds:
                     func = getattr(self, 'do_' + cmd)
                 else:
                     func = getattr(self.current_distro_module, cmd)
