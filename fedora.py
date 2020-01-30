@@ -34,7 +34,7 @@ PKGS_TO_INSTALL = [
     "kitty",
     "flameshot",
     "npm",
-    "libpq-dev",
+    "libpq-devel",
 ]
 
 
