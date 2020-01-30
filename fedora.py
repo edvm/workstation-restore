@@ -139,7 +139,7 @@ def setup_node_npm_n():
         fp.write(f'export N_PREFIX="{n_dir}"\n')
         fp.write('export PATH="$PATH:$NPM_PACKAGES/bin"\n')
         fp.write('export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"\n')
-    
+
     execute(f"npm i -g n", env={"NPM_PACKAGES": npm_packages_dir})
 
 
@@ -154,6 +154,17 @@ def install_pyenv():
         zshrc.write(f'export PATH="{HOME}/.pyenv/bin:$PATH"\n')
         zshrc.write('eval "$(pyenv init -)"\n')
         zshrc.write('eval "$(pyenv virtualenv-init -)"\n')
+
+
+def install_spaceship_prompt():
+    """Install spaceship prompt.
+    https://github.com/denysdovhan/spaceship-prompt
+    NOTE: Be sure to execute `setup_node_npm_n` before.
+    """
+    i = input('Have you executed `setup_node_npm_n` before? (y/n)')
+    if i == 'n':
+        setup_node_npm_n()
+    execute('npm i -g spaceship-prompt')
 
 
 def setup_golang():
