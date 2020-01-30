@@ -3,8 +3,7 @@
 It's a personal and simple (quickly written) script to install
 all the usual tools I use on my workstation.
 
-Ideal to be excecuted after a fresh system install. You will end
-with:
+It gives you a command line tool that lets you install and autoconfigure:
 
 - vscode
 - zsh and oh-my-zsh configured for the user that runs the script
@@ -17,6 +16,7 @@ with:
 - flameshot (https://flameshot.js.org/#/) to take screenshots 
 - fisavim (http://vim.fisadev.com/)
 - node, npm and `n` (node version management, https://github.com/tj/n)
+- spaceshipt prompt (https://github.com/denysdovhan/spaceship-prompt)
 
 ## How to use it:
 
