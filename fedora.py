@@ -10,6 +10,7 @@ from recipes.pyenv import install_pyenv
 from recipes.kitty import setup_kitty_term
 from recipes.node import setup_node_npm_n
 from recipes.spaceship import install_spaceship_prompt
+from recipes.fonts import install_fonts
 
 
 VSCODE_GPG_KEY_CMD = """
@@ -87,9 +88,3 @@ def setup_golang():
         zshrc.write("\n")
         zshrc.write("# Fedora restore :: setup GOHOME\n")
         zshrc.write(f'export GOPATH="{gohome}"\n')
-
-
-def install_fonts():
-    tell_user("Going to install Fira Code fonts...")
-    os.system("bash ./fonts/install_fira_code.sh")
-
