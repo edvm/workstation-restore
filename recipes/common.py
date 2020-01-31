@@ -1,6 +1,10 @@
 import subprocess
-import inspect
 import shlex
+import os
+
+
+HOME = os.getenv("HOME")
+SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 def tell_user(msg, stcode=None):
@@ -30,9 +34,3 @@ def execute(cmd, env=None):
     tell_user('', stcode=returncode)
     return returncode
 
-
-def module_fns_list(module):
-    """Return functions found in given module."""
-    for member in inspect.getmembers(module):
-        if inspect.isfunction(member[1]):
-            yield member
