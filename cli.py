@@ -3,11 +3,10 @@
 import os
 import sys
 import cmd
-import dummy
-import fedora
 import inspect
 
 from recipes.common import tell_user, SCRIPT_PATH
+from distros import fedora, dummy
 
 
 class SystemRestoreShell(cmd.Cmd):
