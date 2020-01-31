@@ -87,3 +87,4 @@ def setup_golang():
         zshrc.write("\n")
         zshrc.write("# Fedora restore :: setup GOHOME\n")
         zshrc.write(f'export GOPATH="{gohome}"\n')
+        zshrc.write(f'export GO111MODULE="auto"\n')
