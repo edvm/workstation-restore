@@ -1,4 +1,4 @@
-from common import tell_user
+from recipes.common import tell_user
 
 
 def dummy_fn(message=''):
