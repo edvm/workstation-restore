@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
 import os
+import sys
 import cmd
 import dummy
 import fedora
+import inspect
 
-from common import tell_user, module_fns_list
+from recipes.common import tell_user, SCRIPT_PATH
 
 
 class SystemRestoreShell(cmd.Cmd):
@@ -13,10 +15,10 @@ class SystemRestoreShell(cmd.Cmd):
 
     intro = "Welcome to System Restore. Type help or ? to list commands.\n"
     distro = ""
-    distros = {'fedora': fedora, 'dummy': dummy}
+    distros = {"fedora": fedora, "dummy": dummy}
 
     to_remove = []
-    system_restore_shell_cmds = ['help', '?', 'change_distro', 'quit']
+    system_restore_shell_cmds = ["help", "?", "change_distro", "quit"]
 
     @property
     def prompt(self):
@@ -27,6 +29,12 @@ class SystemRestoreShell(cmd.Cmd):
     @property
     def current_distro_module(self):
         return self.distros[self.distro]
+
+    def module_fns_list(self, module):
+        """Return functions found in given module."""
+        for member in inspect.getmembers(module):
+            if inspect.isfunction(member[1]):
+                yield member
 
     def remove_old_fns(self):
         """Remove previously loaded functions."""
@@ -41,8 +49,8 @@ class SystemRestoreShell(cmd.Cmd):
     def load_module_fns(self, module=fedora):
         """Load module functions."""
         self.remove_old_fns()
-        for fname, fn in module_fns_list(module):
-            if fname.startswith('_'):
+        for fname, fn in self.module_fns_list(module):
+            if fname.startswith("_"):
                 continue
             name = f"do_{fname}"
             self.to_remove.append(name)
@@ -63,14 +71,14 @@ class SystemRestoreShell(cmd.Cmd):
         if cmd is None:
             return self.default(line)
         self.lastcmd = line
-        if line == 'EOF' :
-            self.lastcmd = ''
-        if cmd == '':
+        if line == "EOF":
+            self.lastcmd = ""
+        if cmd == "":
             return self.default(line)
         else:
             try:
                 if cmd in self.system_restore_shell_cmds:
-                    func = getattr(self, 'do_' + cmd)
+                    func = getattr(self, "do_" + cmd)
                 else:
                     func = getattr(self.current_distro_module, cmd)
                     if not arg:  # if no args defined, just call module `func` right now
@@ -81,12 +89,15 @@ class SystemRestoreShell(cmd.Cmd):
 
     def do_change_distro(self, arg):
         """Change distro."""
-        supported_distros = ['dummy', 'fedora']
+        supported_distros = ["dummy", "fedora"]
         if arg not in supported_distros:
-            tell_user(f"Sorry, {arg} is not supported\nSupported distros are: {supported_distros}", 1)
+            tell_user(
+                f"Sorry, {arg} is not supported\nSupported distros are: {supported_distros}",
+                1,
+            )
             return
         self.distro = arg
-        os.system('clear')
+        os.system("clear")
         self.load_module_fns(self.distros[arg])
 
     def do_quit(self, arg):
@@ -94,5 +105,7 @@ class SystemRestoreShell(cmd.Cmd):
         return True
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    # Insert path to this script to `sys.path`
+    sys.path.insert(0, SCRIPT_PATH)
     SystemRestoreShell().cmdloop()
