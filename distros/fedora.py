@@ -1,7 +1,6 @@
 import pathlib
 import shutil
 import sys
-import cmd
 import os
 
 from recipes.common import execute, tell_user, HOME, SCRIPT_PATH
@@ -41,7 +40,7 @@ PKGS_TO_INSTALL = [
 ]
 
 
-def install_base_pkgs(cmd, pkgs=None):
+def install_base_pkgs(pkgs=None):
     """Install basic system packages (dev headers, tools, lang compilers, etc.)"""
     if not pkgs:
         pkgs = PKGS_TO_INSTALL
@@ -49,7 +48,7 @@ def install_base_pkgs(cmd, pkgs=None):
     execute(f"sudo dnf install -y {' '.join(pkg for pkg in pkgs)}")
 
 
-def install_vs_code(cmd):
+def install_vs_code():
     """Import Microsoft vscode gpg key, adds microsoft repository and then install vscode."""
     tell_user("Going to install vscode...")
     tell_user("Importing vscode repo...")
