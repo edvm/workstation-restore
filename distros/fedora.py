@@ -37,6 +37,7 @@ PKGS_TO_INSTALL = [
     "flameshot",
     "npm",
     "libpq-devel",
+    "protobuf-compiler",
 ]
 
 
