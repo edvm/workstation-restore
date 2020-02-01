@@ -88,4 +88,8 @@ def setup_golang():
         zshrc.write("\n")
         zshrc.write("# Fedora restore :: setup GOHOME\n")
         zshrc.write(f'export GOPATH="{gohome}"\n')
+        zshrc.write(f'export PATH="$PATH:$GOPATH/bin"\n')
         zshrc.write(f'export GO111MODULE="auto"\n')
+
+    tell_user("Downloading protoc golang plugin..."
+    execute("go get -u github.com/golang/protobuf/protoc-gen-go")
