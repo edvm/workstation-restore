@@ -530,6 +530,7 @@ function connect(s)
           cpu_icon,
           widget_display_l,
           cpu_widget,
+	  myweather,
           widget_display_r,
           spr5px,
           -- Mem widget
