@@ -4,7 +4,7 @@ import sys
 import os
 
 from recipes.common import execute, tell_user, HOME, SCRIPT_PATH
-from recipes.zsh import setup_zsh_shell
+from recipes.ohmyzsh import setup_oh_my_zsh 
 from recipes.pyenv import install_pyenv
 from recipes.kitty import setup_kitty_term
 from recipes.node import setup_node_npm_n

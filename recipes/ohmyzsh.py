@@ -7,9 +7,14 @@ from recipes.common import tell_user, execute
 HOME = os.getenv("HOME")
 
 
-def setup_zsh_shell():
-    """Setup zsh for current user."""
-    
+def setup_oh_my_zsh(change_usershell=False):
+    """Download and setup `oh my zsh` for current user.
+
+    Arguments:
+
+        - change_usershell (bool)   If True, it will execute `chsh` to set users shell to zsh
+    """
+
     tell_user("Going to setup zsh...")
     zshrc = f"{HOME}/.zshrc"
     if os.path.exists(zshrc):
@@ -24,5 +29,6 @@ def setup_zsh_shell():
     tell_user("Setting oh-my-zsh base template as zshrc file...")
     execute(f"cp {ohmyzsh}/templates/zshrc.zsh-template {HOME}/.zshrc")
 
-    tell_user("Changing user shell to zsh...")
-    execute("chsh -s /usr/bin/zsh")
+    if change_usershell:
+        tell_user("Changing user shell to zsh...")
+        execute("chsh -s /usr/bin/zsh")

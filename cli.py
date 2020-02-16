@@ -6,7 +6,14 @@ import cmd
 import inspect
 
 from recipes.common import tell_user, SCRIPT_PATH
-from distros import fedora, dummy
+from distros import fedora, dummy, elementary
+
+
+DISTROS = {
+    "elementary": elementary,
+    "fedora": fedora,
+    "dummy": dummy
+}
 
 
 class SystemRestoreShell(cmd.Cmd):
@@ -14,10 +21,9 @@ class SystemRestoreShell(cmd.Cmd):
 
     intro = "Welcome to System Restore. Type help or ? to list commands.\n"
     distro = ""
-    distros = {"fedora": fedora, "dummy": dummy}
 
     to_remove = []
-    system_restore_shell_cmds = ["help", "?", "change_distro", "quit"]
+    system_restore_shell_cmds = ["help", "?", "change_distro", "quit", "show_distros"]
 
     @property
     def prompt(self):
@@ -27,7 +33,8 @@ class SystemRestoreShell(cmd.Cmd):
 
     @property
     def current_distro_module(self):
-        return self.distros[self.distro]
+        if self.distro in DISTROS:
+            return DISTROS[self.distro]
 
     def module_fns_list(self, module):
         """Return functions found in given module."""
@@ -79,25 +86,31 @@ class SystemRestoreShell(cmd.Cmd):
                 if cmd in self.system_restore_shell_cmds:
                     func = getattr(self, "do_" + cmd)
                 else:
-                    func = getattr(self.current_distro_module, cmd)
-                    if not arg:  # if no args defined, just call module `func` right now
+                    func = getattr(self.current_distro_module, cmd, None)
+                    if not arg and func:  # if no args defined, just call module `func` right now
                         return func()
             except AttributeError:
                 return self.default(line)
-            return func(arg)
+            if func:
+                return func(arg)
 
     def do_change_distro(self, arg):
         """Change distro."""
-        supported_distros = ["dummy", "fedora"]
-        if arg not in supported_distros:
+        if arg not in DISTROS.keys():
             tell_user(
-                f"Sorry, {arg} is not supported\nSupported distros are: {supported_distros}",
+                f"Sorry, {arg} is not supported\nSupported distros are: {DISTROS}",
                 1,
             )
             return
         self.distro = arg
         os.system("clear")
-        self.load_module_fns(self.distros[arg])
+        self.load_module_fns(DISTROS[arg])
+
+    def do_show_distros(self, arg):
+        """Show available distros."""
+        tell_user("Supported Gnu/Linux distribution are:")
+        tell_user(f"{list(DISTROS.keys())}")
+        tell_user("Use command: change_distro <distro name> to load its specific commands")
 
     def do_quit(self, arg):
         """Exit system restore."""

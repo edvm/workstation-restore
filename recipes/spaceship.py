@@ -1,13 +1,10 @@
-from recipes.common import execute
+from recipes.common import execute, tell_user
 
 
 def install_spaceship_prompt():
     """Install spaceship prompt.
     https://github.com/denysdovhan/spaceship-prompt
-    NOTE: Be sure to execute `setup_node_npm_n` before.
+
+    NOTE: Be sure to have `node`/`npm` installed on your system 
     """
-    i = input("Have you executed `setup_node_npm_n` before? (y/n)")
-    if i == "n":
-        from recipes.node import setup_node_npm_n
-        setup_node_npm_n()
     execute("npm i -g spaceship-prompt")

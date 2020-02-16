@@ -20,7 +20,7 @@ def setup_node_npm_n():
     zshrc = f"{HOME}/.zshrc"
     with open(zshrc, "a") as fp:
         fp.write("\n")
-        fp.write("# Fedora restore :: setup node to install packages without sudo\n")
+        fp.write("# Setup node to install packages without sudo\n")
         fp.write(f'export NPM_PACKAGES="{npm_packages_dir}"\n')
         fp.write(f'export N_PREFIX="{n_dir}"\n')
         fp.write('export PATH="$PATH:$NPM_PACKAGES/bin"\n')
