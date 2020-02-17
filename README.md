@@ -27,6 +27,8 @@ It gives you a command line tool that lets you execution functions which will in
 
 ## How to use it:
 
+You need to have Python 3.6 or a mayor version installed. Nothing more. Current supported distros (Elementary OS and Fedora >= 31) satisfy this requirement on base installation.
+
 1- git clone https://github.com/edvm/workstation-restore.git
 
 2- cd workstation-restore && chmod +x ./shell
