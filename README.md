@@ -27,7 +27,12 @@ It gives you a command line tool that lets you execution functions which will in
 
 ## How to use it:
 
-Just execute `shell`.
+1- git clone https://github.com/edvm/workstation-restore.git
+
+2- cd workstation-restore && chmod +x ./shell
+
+3- ./shell
+
 
 Get a list of supported Gnu/Linux distributions typing the cmd: `show_distros`.
 
