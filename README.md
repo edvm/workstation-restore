@@ -31,11 +31,11 @@ Just execute `shell`.
 
 Get a list of supported Gnu/Linux distributions typing the cmd: `show_distros`.
 
-![](screenshots/3.jpeg)
+![](screenshots/2.jpeg)
 
 Use `change_distro fedora`  or `change_distro elementary` and then type `help` to get the list of commands.
 
-![](screenshots/4.jpeg)
+![](screenshots/3.jpeg)
 
 
 ## It's extensible
